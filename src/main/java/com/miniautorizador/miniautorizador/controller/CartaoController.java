@@ -31,7 +31,6 @@ public class CartaoController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
     @GetMapping("/{numeroCartao}")
     @ResponseStatus(HttpStatus.OK)
