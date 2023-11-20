@@ -41,7 +41,6 @@ public class CartaoController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
