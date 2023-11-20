@@ -37,7 +37,7 @@ public class CartaoController {
     public ResponseEntity<?>  obterSaldo(
             @Valid @PathVariable final String numeroCartao) {
         try {
-            return criarCartaoService.varificarCartao(numeroCartao);
+            return criarCartaoService.verificarCartao(numeroCartao);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

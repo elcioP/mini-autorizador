@@ -4,13 +4,15 @@ import com.miniautorizador.miniautorizador.Enumerator.StatusCartao;
 import com.miniautorizador.miniautorizador.Enumerator.ValorInicialCartaoEnum;
 import com.miniautorizador.miniautorizador.model.Cartao;
 import com.miniautorizador.miniautorizador.request.CriarCartaoRequest;
+import com.miniautorizador.miniautorizador.response.CriarCartaoResponse;
+import com.miniautorizador.miniautorizador.response.SaldoCartaoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.miniautorizador.miniautorizador.repository.CartaoRepository;
 
-import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 public class CriarCartaoService {
@@ -34,14 +36,16 @@ public class CriarCartaoService {
             cartaoNovo.setNumeroCartao(request.getNumeroCartao());
             cartaoNovo.setSenha(request.getSenha());
             cartaoNovo.setSaldo(ValorInicialCartaoEnum.VALOR_INICIAL.getValorInicial());
+            cartaoNovo.setId(UUID.randomUUID());
             Cartao cartaoSalvo =  this.salvarCartao(cartaoNovo);
-            return new ResponseEntity(cartaoSalvo, HttpStatus.CREATED);
+            CriarCartaoResponse response =  CriarCartaoResponse.builder().numeroCartao(cartaoSalvo.getNumeroCartao()).senha(cartaoSalvo.getSenha()).build();
+            return new ResponseEntity(response, HttpStatus.CREATED);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
 
     }
-    public ResponseEntity<?> varificarCartao(String numeroCartao) throws Exception {
+    public ResponseEntity<?> verificarCartao(String numeroCartao) throws Exception {
         ResponseEntity response = (criarCartaoRepository.existsByNumeroCartao(numeroCartao)) ? this.obterSaldo(numeroCartao) : this.cartaoNaoExiste();
         return response;
     }
@@ -50,7 +54,7 @@ public class CriarCartaoService {
     private ResponseEntity<?> obterSaldo(String numeroCartao) throws Exception {
         try {
             Cartao cartaoComSaldo = this.buscarCartao(numeroCartao);
-            return new ResponseEntity(cartaoComSaldo.getSaldo(), HttpStatus.OK);
+            return new ResponseEntity(SaldoCartaoResponse.builder().saldo(cartaoComSaldo.getSaldo()).build(), HttpStatus.OK);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

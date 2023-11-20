@@ -42,7 +42,7 @@ public class TransacaoService {
         BigDecimal valorSaldoAtual = cartao.getSaldo().subtract(transacaoRequest.getValor());
         cartao.setSaldo(valorSaldoAtual);
         cartaoService.salvarCartao(cartao);
-        return new ResponseEntity(cartao, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     public ResponseEntity<?> saldoInvalido() {
