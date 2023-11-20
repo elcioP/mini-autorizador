@@ -29,6 +29,7 @@ public class TransacaoController {
             @Valid @RequestBody final TransacaoRequest transacaoRequest) {
         return transacaoService.validarTransacao(transacaoRequest);
     }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
